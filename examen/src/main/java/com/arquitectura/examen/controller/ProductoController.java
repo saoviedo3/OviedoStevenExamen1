@@ -2,6 +2,7 @@ package com.arquitectura.examen.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,16 +59,16 @@ public class ProductoController {
     }
 
     @PostMapping("/{id}/aumentarstock")
-    public ResponseEntity<Producto> aumentarStock(@PathVariable Integer id,
-            @RequestParam Integer cantidad,
-            @RequestParam BigDecimal precioCompra) {
+    public ResponseEntity<Producto> aumentarStock(@PathVariable Integer id, @RequestBody Map<String, Object> datos) {
+        Integer cantidad = (Integer) datos.get("cantidad");
+        BigDecimal precioCompra = new BigDecimal(datos.get("precioCompra").toString());
         Producto actualizado = productoService.aumentarStock(id, cantidad, precioCompra);
         return ResponseEntity.ok(actualizado);
     }
 
     @PostMapping("/{id}/disminuirstock")
-    public ResponseEntity<Producto> disminuirStock(@PathVariable Integer id,
-            @RequestParam Integer cantidad) {
+    public ResponseEntity<Producto> disminuirStock(@PathVariable Integer id, @RequestBody Map<String, Object> datos) {
+        Integer cantidad = (Integer) datos.get("cantidad");
         Producto actualizado = productoService.disminuirStock(id, cantidad);
         return ResponseEntity.ok(actualizado);
     }
